@@ -1,11 +1,10 @@
 package com.example.demo.TaskMap.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Setter
 @Getter
@@ -19,7 +18,13 @@ public class Employee {
 
     private String employeeName;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "employee_id")
-    private List<EmployeeDetails> employeeDetails;
+    @Lob
+    @Column(columnDefinition ="BLOB")
+    private byte[] image;
+
+    @ManyToOne
+    @JoinColumn(name = "details_id")
+    @JsonIgnoreProperties("employees")
+    private EmployeeDetails employeeDetails;
+
 }
